@@ -25,6 +25,7 @@ setup();
 function setup() {
     trackGen = new Track();
     track = trackGen.generateTrack();
+    console.table(track);
 
     update(); // Call update at least once before calling it in a loop (it may be removed in the future)
     setInterval(update, 1000/60); // 60 fps (for now, so that it doesn't run too fast to debug)
@@ -43,7 +44,7 @@ function draw() {
     mainCtx.clearRect(0, 0, mainCanvas.width, mainCanvas.height);
 
     // draw stuff
-    trackGen.draw(mainCtx);
+    trackGen.draw(mainCtx, track, mainCanvas.width);
 
     // call this function again next frame
     requestAnimationFrame(draw);

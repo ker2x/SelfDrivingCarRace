@@ -8,7 +8,6 @@ class Track {
 
     getVerticies(cell) {
         const cells = Array.isArray(cell) ? cell : [cell];
-
         let vertices = [];
         const edges = [];
 
@@ -23,7 +22,7 @@ class Track {
         vertices = vertices.filter(function (v) {
             return edges.filter(e => v === e.va || v === e.vb).length == 2;
         });
-
+        //console.table(vertices);
 
         const offX = -this.bbox.xr / 2,
             offY = -this.bbox.yb / 2;
@@ -35,20 +34,25 @@ class Track {
     generateTrack() {
         const sites = [];
 
-        for (let i = 0; i < this.N_cells; i ++)
+        for (let i = 0; i < this.N_cells; i ++) {
             //sites.push({x: new Math.random(this.bbox.xr), y: Math.random(this.bbox.yb)});
             sites.push({x: Math.random() * this.bbox.xr, y: Math.random() * this.bbox.yb});
+        }
+        //console.table(sites);
 
         const diagram = this.voronoi.compute(sites, this.bbox);
-        const seeds = diagram.cells.filter(cell => collideLinePoly(...this.collisionLine, this.getVerticies(cell)));
+        //console.table(diagram.cells);
 
-        return this.getVerticies(seeds).map(v => {v.x, v.y});
+        const seeds = diagram.cells.filter(cell => collideLinePoly(...this.collisionLine, this.getVerticies(cell)));
+        //console.table(seeds);
+        return this.getVerticies(seeds).map(v => [v.x, v.y]);
+        //console.table(test);
     }
 
 
     inflatePolygon(poly, spacing)
     {
-        var geoInput = vectorCoordinates2JTS(poly);
+        var geoInput = this.vectorCoordinates2JTS(poly);
         geoInput.push(geoInput[0]);
 
         var geometryFactory = new jsts.geom.GeometryFactory();
@@ -62,22 +66,37 @@ class Track {
         for (let i = 0; i < oCoordinates.length; i++) {
             var oItem;
             oItem = oCoordinates[i];
-            inflatedCoordinates.push({x: oItem.x, y: oItem.y});
+            inflatedCoordinates.push([oItem.x, oItem.y]);
         }
         return inflatedCoordinates;
     }
 
     vectorCoordinates2JTS (polygon) {
         var coordinates = [];
-
         for (var i = 0; i < polygon.length; i++) {
-            coordinates.push(new jsts.geom.Coordinate(polygon[i].x, polygon[i].y));
+            coordinates.push(new jsts.geom.Coordinate(polygon[i][0], polygon[i][1]));
         }
         return coordinates;
     }
 
-    draw(ctx) {
-
+    draw(ctx, track, size) {
+        const poly = this.inflatePolygon(track, 0.1);
+        ctx.lineWidth = 5;
+        ctx.strokeStyle = "white";
+        ctx.beginPath();
+        ctx.moveTo(track[0][0] * size, track[0][1]* size);
+        for (let i = 1; i < track.length; i++) {
+            ctx.lineTo(track[i][0]* size, track[i][1]* size);
+        }
+        ctx.lineTo(track[0][0]* size, track[0][1]*size);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(poly[0][0] * size, poly[0][1]* size);
+        for (let i = 1; i < poly.length; i++) {
+            ctx.lineTo(poly[i][0]* size, poly[i][1]* size);
+        }
+        ctx.lineTo(poly[0][0]* size, poly[0][1]*size);
+        ctx.stroke();
     }
 
 }
