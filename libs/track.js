@@ -1,9 +1,11 @@
 class Track {
-    constructor() {
+    // // xl is x-left, xr is x-right, yt is y-top, and yb is y-bottom
+    constructor(xl, xr, yt, yb, N_cells) {
         this.voronoi = new Voronoi();
-        this.bbox = {xl: 0, xr: 1, yt: 0, yb: 1};
-        this.collisionLine = [0.25, 0.5, 0.75, 0.5];
-        this.N_cells = 20;
+        this.bbox = {xl: xl, xr: xr, yt: yt, yb: yb};
+        //console.table(this.bbox);
+        this.collisionLine = [xr*0.25, xr*0.25, yb*0.75, yb*0.75]; // x1, x2, y1, y2
+        this.N_cells = 10;
     }
 
     getVerticies(cell) {
@@ -35,18 +37,15 @@ class Track {
         const sites = [];
 
         for (let i = 0; i < this.N_cells; i ++) {
-            //sites.push({x: new Math.random(this.bbox.xr), y: Math.random(this.bbox.yb)});
             sites.push({x: Math.random() * this.bbox.xr, y: Math.random() * this.bbox.yb});
         }
-        //console.table(sites);
 
         const diagram = this.voronoi.compute(sites, this.bbox);
-        //console.table(diagram.cells);
 
         const seeds = diagram.cells.filter(cell => collideLinePoly(...this.collisionLine, this.getVerticies(cell)));
-        //console.table(seeds);
-        return this.getVerticies(seeds).map(v => [v.x, v.y]);
-        //console.table(test);
+        //return this.getVerticies(seeds).map(v => [v.x, v.y]);
+        return this.inflatePolygon(this.getVerticies(seeds).map(v => [v.x, v.y]), 10);
+
     }
 
 
@@ -79,23 +78,24 @@ class Track {
         return coordinates;
     }
 
-    draw(ctx, track, size) {
-        const poly = this.inflatePolygon(track, 0.1);
+    draw(ctx, track) {
+        //console.table(track);
+        const poly = this.inflatePolygon(track, 50);
         ctx.lineWidth = 5;
         ctx.strokeStyle = "white";
         ctx.beginPath();
-        ctx.moveTo(track[0][0] * size, track[0][1]* size);
+        ctx.moveTo(track[0][0], track[0][1]);
         for (let i = 1; i < track.length; i++) {
-            ctx.lineTo(track[i][0]* size, track[i][1]* size);
+            ctx.lineTo(track[i][0], track[i][1]);
         }
-        ctx.lineTo(track[0][0]* size, track[0][1]*size);
+        ctx.lineTo(track[0][0], track[0][1]);
         ctx.stroke();
         ctx.beginPath();
-        ctx.moveTo(poly[0][0] * size, poly[0][1]* size);
+        ctx.moveTo(poly[0][0], poly[0][1]);
         for (let i = 1; i < poly.length; i++) {
-            ctx.lineTo(poly[i][0]* size, poly[i][1]* size);
+            ctx.lineTo(poly[i][0], poly[i][1]);
         }
-        ctx.lineTo(poly[0][0]* size, poly[0][1]*size);
+        ctx.lineTo(poly[0][0], poly[0][1]);
         ctx.stroke();
     }
 
