@@ -3,7 +3,7 @@
     - voronoi lib : https://github.com/gorhill/Javascript-Voronoi
     - main algo for track generation : https://openprocessing.org/sketch/863495/
     - JS topology suite : https://github.com/bjornharrtell/jsts
-    PS : it may be full of jetbrains inspection directives, don't worry about it
+    - it may be full of jetbrains inspection directives, don't worry about it
  */
 
 
