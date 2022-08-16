@@ -6,7 +6,8 @@
 // Create & configure main canvas
 const mainCanvas = document.getElementById('mainCanvas');
 mainCanvas.height = window.innerHeight;
-mainCanvas.width = window.innerHeight;
+// noinspection JSSuspiciousNameCombination
+mainCanvas.width = mainCanvas.height; // square canvas
 const mainCtx = mainCanvas.getContext('2d');
 
 // Start the program
