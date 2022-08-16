@@ -44,7 +44,7 @@ class Track {
 
         const seeds = diagram.cells.filter(cell => collideLinePoly(...this.collisionLine, this.getVerticies(cell)));
         //return this.getVerticies(seeds).map(v => [v.x, v.y]);
-        return this.inflatePolygon(this.getVerticies(seeds).map(v => [v.x, v.y]), 10);
+        return this.inflatePolygon(this.getVerticies(seeds).map(v => [v.x, v.y]), -10);
 
     }
 
@@ -80,7 +80,7 @@ class Track {
 
     draw(ctx, track) {
         //console.table(track);
-        const poly = this.inflatePolygon(track, 50);
+        const poly = this.inflatePolygon(track, 70);
         ctx.lineWidth = 5;
         ctx.strokeStyle = "white";
         ctx.beginPath();

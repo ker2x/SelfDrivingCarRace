@@ -35,7 +35,7 @@ function setup() {
     //console.table(track);
 
     update(); // Call update at least once before calling it in a loop (it may be removed in the future)
-    setInterval(update, 1000/6); // 60 fps (for now, so that it doesn't run too fast to debug)
+    setInterval(update, 1000/3); // 60 fps (for now, so that it doesn't run too fast to debug)
     requestAnimationFrame(draw);  // draw every frame
 }
 
