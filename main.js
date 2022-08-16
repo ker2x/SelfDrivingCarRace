@@ -15,11 +15,17 @@ mainCanvas.width = mainCanvas.height; // square canvas
 
 const mainCtx = mainCanvas.getContext('2d');
 
+let trackGen;
+let track;
+
 // Start the program
 setup();
 
 // setup
 function setup() {
+    trackGen = new Track();
+    track = trackGen.generateTrack();
+
     update(); // Call update at least once before calling it in a loop (it may be removed in the future)
     setInterval(update, 1000/60); // 60 fps (for now, so that it doesn't run too fast to debug)
     requestAnimationFrame(draw);  // draw every frame
@@ -37,6 +43,7 @@ function draw() {
     mainCtx.clearRect(0, 0, mainCanvas.width, mainCanvas.height);
 
     // draw stuff
+    trackGen.draw(mainCtx);
 
     // call this function again next frame
     requestAnimationFrame(draw);
