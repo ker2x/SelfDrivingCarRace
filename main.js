@@ -10,7 +10,6 @@
 // Create & configure main canvas
 const mainCanvas = document.getElementById('mainCanvas');
 mainCanvas.height = window.innerHeight;
-
 // noinspection JSSuspiciousNameCombination
 mainCanvas.width = mainCanvas.height; // square canvas
 
@@ -21,8 +20,8 @@ setup();
 
 // setup
 function setup() {
-    update(); // Call update at least once before calling it in a loop (may be removed in the future)
-    setInterval(update, 1000/60); // 60 fps (for now, so that it doesn't run too fast too debug)
+    update(); // Call update at least once before calling it in a loop (it may be removed in the future)
+    setInterval(update, 1000/60); // 60 fps (for now, so that it doesn't run too fast to debug)
     requestAnimationFrame(draw);  // draw every frame
 }
 
