@@ -1,13 +1,17 @@
+
+// This class is used to generate the race track.
 class Track {
-    // // xl is x-left, xr is x-right, yt is y-top, and yb is y-bottom
+
+    // xl is x-left, xr is x-right, yt is y-top, and yb is y-bottom
     constructor(xl, xr, yt, yb, N_cells) {
         this.voronoi = new Voronoi();
         this.bbox = {xl: xl, xr: xr, yt: yt, yb: yb};
         //console.table(this.bbox);
         this.collisionLine = [xr*0.25, xr*0.25, yb*0.75, yb*0.75]; // x1, x2, y1, y2
-        this.N_cells = 10;
+        this.N_cells = N_cells;
     }
 
+    //  Returns the verticies of a cell as an xy array of jsts.geom.Coordinate objects.
     getVerticies(cell) {
         const cells = Array.isArray(cell) ? cell : [cell];
         let vertices = [];
@@ -21,10 +25,7 @@ class Track {
             }
         }
 
-        vertices = vertices.filter(function (v) {
-            return edges.filter(e => v === e.va || v === e.vb).length == 2;
-        });
-        //console.table(vertices);
+        vertices = vertices.filter( v =>  edges.filter(e => v === e.va || v === e.vb).length == 2);
 
         const offX = -this.bbox.xr / 2,
             offY = -this.bbox.yb / 2;
